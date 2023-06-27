@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "stdio.h": "c",
+    "stdint.h": "c",
+    "limits.h": "c",
+    "time.h": "c",
+    "cstdio": "c",
+    "format": "c",
+    "_stdio.h": "c",
+    "cdefs.h": "c",
+    "stdarg.h": "c"
+  }
+}
