@@ -572,15 +572,145 @@ FILE *funopen(const void *,
                  int (* )(void *));
 }
 # 2 "/Users/hjmac04/Desktop/cxx-practice/gcc/output-options/test-E.c" 2
+# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 1 3 4
+# 69 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 3 4
+extern "C" {
+void *memchr(const void *__s, int __c, size_t __n);
+int memcmp(const void *__s1, const void *__s2, size_t __n);
+void *memcpy(void *__dst, const void *__src, size_t __n);
+void *memmove(void *__dst, const void *__src, size_t __len);
+void *memset(void *__b, int __c, size_t __len);
+char *strcat(char *__s1, const char *__s2);
+char *strchr(const char *__s, int __c);
+int strcmp(const char *__s1, const char *__s2);
+int strcoll(const char *__s1, const char *__s2);
+char *strcpy(char *__dst, const char *__src);
+size_t strcspn(const char *__s, const char *__charset);
+char *strerror(int __errnum) __asm("_" "strerror" );
+size_t strlen(const char *__s);
+char *strncat(char *__s1, const char *__s2, size_t __n);
+int strncmp(const char *__s1, const char *__s2, size_t __n);
+char *strncpy(char *__dst, const char *__src, size_t __n);
+char *strpbrk(const char *__s, const char *__charset);
+char *strrchr(const char *__s, int __c);
+size_t strspn(const char *__s, const char *__charset);
+char *strstr(const char *__big, const char *__little);
+char *strtok(char *__str, const char *__sep);
+size_t strxfrm(char *__s1, const char *__s2, size_t __n);
+}
+# 103 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 3 4
+extern "C" {
+char *strtok_r(char *__str, const char *__sep, char **__lasts);
+}
+# 115 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 3 4
+extern "C" {
+int strerror_r(int __errnum, char *__strerrbuf, size_t __buflen);
+char *strdup(const char *__s1);
+void *memccpy(void *__dst, const void *__src, int __c, size_t __n);
+}
+# 129 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 3 4
+extern "C" {
+char *stpcpy(char *__dst, const char *__src);
+char *stpncpy(char *__dst, const char *__src, size_t __n) ;
+char *strndup(const char *__s1, size_t __n) ;
+size_t strnlen(const char *__s1, size_t __n) ;
+char *strsignal(int __sig);
+}
 
 
-# 3 "/Users/hjmac04/Desktop/cxx-practice/gcc/output-options/test-E.c"
-int a = 1;
+
+
+
+# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/sys/_types/_rsize_t.h" 1 3 4
+# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/sys/_types/_rsize_t.h" 3 4
+typedef __darwin_size_t rsize_t;
+# 142 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 2 3 4
+# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/sys/_types/_errno_t.h" 1 3 4
+# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/sys/_types/_errno_t.h" 3 4
+typedef int errno_t;
+# 143 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 2 3 4
+
+extern "C" {
+errno_t memset_s(void *__s, rsize_t __smax, int __c, rsize_t __n) ;
+}
 
 
 
 
+
+
+
+extern "C" {
+void *memmem(const void *__big, size_t __big_len, const void *__little, size_t __little_len) ;
+void memset_pattern4(void *__b, const void *__pattern4, size_t __len) ;
+void memset_pattern8(void *__b, const void *__pattern8, size_t __len) ;
+void memset_pattern16(void *__b, const void *__pattern16, size_t __len) ;
+
+char *strcasestr(const char *__big, const char *__little);
+char *strnstr(const char *__big, const char *__little, size_t __len);
+size_t strlcat(char *__dst, const char *__source, size_t __size);
+size_t strlcpy(char *__dst, const char *__source, size_t __size);
+void strmode(int __mode, char *__bp);
+char *strsep(char **__stringp, const char *__delim);
+
+
+void swab(const void * , void * , ssize_t);
+
+
+
+int timingsafe_bcmp(const void *__b1, const void *__b2, size_t __len);
+
+
+
+int strsignal_r(int __sig, char *__strsignalbuf, size_t __buflen);
+}
+
+
+
+
+
+
+# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/strings.h" 1 3 4
+# 67 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/strings.h" 3 4
+extern "C" {
+
+
+int bcmp(const void *, const void *, size_t) ;
+void bcopy(const void *, void *, size_t) ;
+void bzero(void *, size_t) ;
+char *index(const char *, int) ;
+char *rindex(const char *, int) ;
+
+
+int ffs(int);
+int strcasecmp(const char *, const char *);
+int strncasecmp(const char *, const char *, size_t);
+}
+
+
+
+extern "C" {
+int ffsl(long) ;
+int ffsll(long long) ;
+int fls(int) ;
+int flsl(long) ;
+int flsll(long long) ;
+}
+
+# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 1 3 4
+# 93 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/strings.h" 2 3 4
+# 185 "/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/string.h" 2 3 4
+# 3 "/Users/hjmac04/Desktop/cxx-practice/gcc/output-options/test-E.c" 2
+
+
+
+
+
+
+
+
+# 10 "/Users/hjmac04/Desktop/cxx-practice/gcc/output-options/test-E.c"
 int main(int argc, const char* argv[]) {
-  printf("hello world %d\n", a);
+  printf("%s\n", TEXT);
   return 0;
 }

@@ -15,6 +15,7 @@
       "command": "gcc-13",
       "args": [
         "-g",
+        "-trigraphs",
         "-x",
         "c++",
         "-E",

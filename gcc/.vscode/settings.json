@@ -8,6 +8,7 @@
     "format": "c",
     "_stdio.h": "c",
     "cdefs.h": "c",
-    "stdarg.h": "c"
+    "stdarg.h": "c",
+    "random": "c"
   }
 }

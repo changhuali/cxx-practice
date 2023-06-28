@@ -1,11 +1,13 @@
 #include <stdio.h>
+#include <string.h>
 
-int a = 1;
+
+#define TEXT TEXT
 
 // AAAAAA
 // AAAAAA
 // AAAAAA
 int main(int argc, const char* argv[]) {
-  printf("hello world %d\n", a);
+  printf("%s\n", TEXT);
   return 0;
 }
