@@ -2,13 +2,11 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "cppbuild",
+      "type": "shell",
       "label": "build",
       "command": "gcc-13",
       "args": [
         "-save-temps",
-        "-std=c99",
-        "-fgnu89-inline",
         "${file}",
         "-o",
         "${fileDirname}/${fileBasenameNoExtension}"
@@ -16,7 +14,7 @@
       "options": {
         "cwd": "${fileDirname}"
       },
-      "problemMatcher": ["$gcc"],
+      "problemMatcher": ["$gcc-13"],
       "group": {
         "kind": "build",
         "isDefault": true

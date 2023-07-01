@@ -14,5 +14,6 @@
     "float.h": "c",
     "iso646.h": "c"
   },
-  "C_Cpp.default.compilerPath": "/usr/local/bin/gcc-13"
+  "C_Cpp.default.compilerPath": "/usr/local/bin/gcc-13",
+  "cmake.configureOnOpen": true
 }
