@@ -1,7 +1,7 @@
-# 0 "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test-E.c"
+# 0 "test-E.c"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test-E.c"
+# 1 "test-E.c"
 # 1 "/opt/homebrew/Cellar/gcc/13.1.0/lib/gcc/current/gcc/aarch64-apple-darwin22/13/include-fixed/stdio.h" 1 3 4
 # 14 "/opt/homebrew/Cellar/gcc/13.1.0/lib/gcc/current/gcc/aarch64-apple-darwin22/13/include-fixed/stdio.h" 3 4
 # 1 "/opt/homebrew/Cellar/gcc/13.1.0/lib/gcc/current/gcc/aarch64-apple-darwin22/13/include/stdarg.h" 1 3 4
@@ -595,26 +595,25 @@ extern int __vsprintf_chk (char * restrict, int, size_t,
 extern int __vsnprintf_chk (char * restrict, size_t, int, size_t,
        const char * restrict, va_list);
 # 441 "/opt/homebrew/Cellar/gcc/13.1.0/lib/gcc/current/gcc/aarch64-apple-darwin22/13/include-fixed/stdio.h" 2 3 4
-# 2 "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test-E.c" 2
-# 1 "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test.h" 1
-# 3 "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test-E.c" 2
+# 2 "test-E.c" 2
+# 1 "test.h" 1
+# 3 "test-E.c" 2
 
 
-# 4 "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test-E.c"
-int $1 = 1;
+# 4 "test-E.c"
 int main(int argc, const char *argv[])
 {
-  printf("__FILE__: %s\n", "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test-E.c");
-  printf("__LINE__: %d\n", 8);
-  printf("__DATE__: %s\n", "Jul  2 2023");
-  printf("__TIME__: %s\n", "22:13:11");
+  printf("__FILE__: %s\n", "test-E.c");
+  printf("__LINE__: %d\n", 7);
+  printf("__DATE__: %s\n", "Jul  1 2023");
+  printf("__TIME__: %s\n", "18:52:06");
   printf("__STDC__: %d\n", 1);
-  printf("__STDC_VERSION__: %ld\n", 199901L);
+  printf("__STDC_VERSION__: %ld\n", 201710L);
   printf("__STDC_HOSTED__: %d\n", 1);
   printf("__APPLE__: %d\n", 1);
   printf("__GNUC__: %d\n", 13);
   printf("__GNUC_MINOR__: %d\n", 1);
   printf("__VERSION__: %s\n", "13.1.0");
-# 27 "/Users/fan/Desktop/fanfan/cxx-practice/gcc/output-options/test-E.c"
+# 26 "test-E.c"
   return 0;
 }

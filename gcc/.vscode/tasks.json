@@ -7,6 +7,7 @@
       "command": "gcc-13",
       "args": [
         "-save-temps",
+        "-std=c99",
         "${file}",
         "-o",
         "${fileDirname}/${fileBasenameNoExtension}"

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "test.h"
 
+int $1 = 1;
 int main(int argc, const char *argv[])
 {
   printf("__FILE__: %s\n", __FILE__);
