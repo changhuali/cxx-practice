@@ -252,7 +252,7 @@ GNU C 扩展
 - \_\_CHAR_BIT\_\_ 用于定义`char类型`的位宽, 标准头文件内部使用, 开发者不应该直接使用, 而是应该引入相应的头文件
 - \_\_\*\_MAX\_\_系列 用于定义数值类类型的最大值, 标准头文件内部使用, 开发者不应该直接使用, 而是应该引入相应的头文件
 - \_\_\*\_WIDTH\_\_系列 用于定义对应类型的位宽, 标准头文件内部使用, 开发者不应该直接使用, 而是应该引入相应的头文件
-- \__SIZEOF_\*\_\_系列 用于定义相应类型占用的字节数
+- \_\_SIZEOF\_\_系列 用于定义相应类型占用的字节数
 - \_\_BYTE_ORDER\_\_ 用于描述内存中的字节序
 - \_\_ORDER_LITTLE_ENDIAN\_\_ 小端字节序
 - \_\_ORDER_BIG_ENDIAN\_\_ 大端字节序
@@ -268,9 +268,11 @@ C 预处理器通常会定义一些宏, 用来表示系统和机器的类型
 echo | cpp -dM
 ```
 
-- \_\_APPLE\_\_ Mac
-- \_\_linux\_\_ Linux
-- \_\_WIN64\_\_ Windows
+- \_\_APPLE\_\_ Mac 系统
+- \_\_linux\_\_ Linux 系统
+- \_\_WIN64\_\_ Windows 系统
+- \_\_x86_64\_\_ x86_64 架构
+- \_\_aarch64\_\_ arm64 架构
 
 #### 取消宏定义
 
@@ -434,7 +436,7 @@ infile 和 outfile 均可以为`-`, 表示标准输入和输出
 - -MT target
   为 make rule 指定 target 名称, 默认的 target 名称是和主文件的名称, 且不带拓展名, 可以多次指定, 也可以一次指定多个
 - -MQ target
-  和-MT 相同, 不过会为 target 中对 make 来说有特殊含义的字符加上引号
+  和-MT 类似, 不过会为 target 中对 make 来说有特殊含义的字符加上引号
 - -MD
   等同于`-M -MF file`, 但是-E 不会被隐式指定, file 会根据-o 推断, 后缀会被替换为.d
 - -MMD
@@ -457,3 +459,71 @@ infile 和 outfile 均可以为`-`, 表示标准输入和输出
   ```
 - -fmax-include-depth=depth
   设置 include 的最大嵌套深度, 默认 200
+- -ftabstop=width
+  制表位(tab)长度, 默认为 8, <2 或>100 则会被重置为默认值
+- -ftrack-macro-expansion[=level]
+  指定宏展开错误的栈信息级别, 0 表示不生成栈信息, 1 比较省内存, 但是函数宏参数中的每个 token 都会用同样的位置信息, 2 会占用更多内存, 但是会为每个 token 都生成完整的位置信息, 默认为 2
+- -fmacro-prefix-map=old=new
+  对于`__FILE__` `__BASE_FILE__`宏, 如果其展开结果是 old 目录中的文件, 则将其 old 部分前缀映射到 new 目录, new 目录可以是相对路径, 以此可以使结果位置与环境无关(多环境移植性提高)
+- -fexec-charset=charset
+  指定可执行文件的字符集, 默认 UTF-8, charset 为系统 iconv 库支持的所有编码
+- -fwide-exec-charset=charset
+  指定可执行文件的宽字符集, 用于宽字符串和宽字符常量, 默认是 UTF-32BE, UTF-32LE, UTF-16BE, UTF-16LE 中的一个, charset 为系统 iconv 库支持的所有编码
+- -finput-charset=charset
+  指定源代码文件的字符集, 如果没有指定 locale, 则默认为 UTF-8, 此选项比 locale 优先级高, charset 为系统 iconv 库支持的所有编码
+- -fworking-directory
+  会在当前行标后加上以//开头的新行标, 内容是 CPP 预处理时所在的工作目录, 主要提供给一些调试工具使用
+- -A predicate=answer
+  声明一个断言, 断言是一个用来在不同计算机或系统间做测试的功能, 已经被宏替代, 该功能不属于标准
+  ```c
+  // machine是predicate, vax和ns16000是answer
+  #if #machine (vax) || #machine (ns16000)
+  ```
+- -A -predicate=answer
+  取消一个断言, 注意这里的-
+- -C
+  保留注释
+- -CC
+  和-C 类似, 但是会在宏展开时保留宏原有的注释
+- -P
+  禁止输出行标
+  ```c
+  // 预处理结果中的行标格式
+  # 35 "/usr/local/Cellar/gcc/13.1.0/lib/gcc/current/gcc/x86_64-apple-darwin22/13/include/limits.h" 2 3 4
+  ```
+- -traditional
+- -traditional-cpp
+  模拟标准 C 预处理器之前的的行为 [https://gcc.gnu.org/onlinedocs/cpp/Traditional-Mode.html](111), 只会影响预处理器
+- -trigraphs
+  转换 ISO C trigraphs [https://gcc.gnu.org/onlinedocs/cpp/Initial-processing.html](trigraphs), GCC 默认会忽略这些字符, 但是在标准模式(-std/-ansi)下会转换他们
+- -remap
+  允许部分文件系统使用一些特殊字符, 比如 MS-DOS
+- -H
+  打印出每个被用到的头文件, 用相应数量(层级数量)的`.`作缩进
+- -dM
+  只会输出 CPP 执行期间所有的宏定义, 包括预定义宏
+- -dD
+  和-dM 类似, 不过不会包含预定义宏, 并且会输出预处理结果
+- -dN
+  和-dDl 类似, 但是不包含宏展开的值
+- -dI
+  预处理结果会包含#include 指令
+- -dU
+  和-dD 类似, 不过只会输出使用到的宏(运行时决定), 有的宏虽然被源码使用到, 但是可能被条件编译排除, 那这些宏也不会包含到结果中
+- -fdebug-cpp
+  仅用于调试 GCC, 生成 location maps 相关的调试信息
+  ```c
+  {P:main.c;F:<NULL>;L:5;C:1;S:0;M:0x110a67048;E:0,LOC:16962,R:16962}int {P:main.c;F:<NULL>;L:5;C:5;S:0;M:0x110a67048;E:0,LOC:17091,R:17091}main{P:main.c;F:<NULL>;L:5;C:9;S:0;M:0x110a67048;E:0,LOC:17216,R:17216}({P:main.c;F:<NULL>;L:5;C:10;S:0;M:0x110a67048;E:0,LOC:17248,R:17248}){P:main.c;F:<NULL>;L:6;C:1;S:0;M:0x110a67048;E:0,LOC:21056,R:21056}
+  ```
+- -I dir
+- -iquote dir
+- -isystem dir
+- -idirafter dir
+  将 dir 加入头文件查找目录, 如果 dir 以=或$SYSROOT 开头, 那这两个符号会被替换为 sysroot
+  头文件查找顺序如下
+  1. 查找当前文件所在目录(用户头文件)
+  2. 从左到右查找-iquote 指定的目录(用户头文件)
+  3. 从左到右查找-I 指定的目录
+  4. 从左到右查找-isystem 指定的目录(头文件会被标识为系统文件)
+  5. 查找标准系统目录(头文件会被标识为系统文件)
+  6. 从左到右查找-idirafter 指定的目录(头文件会被标识为系统文件)
