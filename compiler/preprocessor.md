@@ -371,6 +371,26 @@ C C++标准声明参数中的指令会产生为定义行为, GNU CPP 会按正�
 - #else 搭配#if #ifdef #ifndef #elif 使用
 - #elif 搭配#if
 
+### 诊断
+
+- #error
+
+预处理时发送至命错误, 预处理会中断处理流程
+
+```c
+#ifdef __vax__
+#error "Won't work on VAXen.  See comments at get_last_object."
+#endif
+```
+
+- #warning
+
+预处理器只会给出警告, 不会中断处理流程
+
+```c
+#warning "this header has been deprecated."
+```
+
 ### 预处理器执行
 
 执行`cpp` or `gcc -E`是等效的, gcc 中, 预处理器和编译器是集成在一起的, 其并不是一个独立的程序, 所以这两个命令最终都是执行 gcc, 并告诉它在预处理完成后停止。
