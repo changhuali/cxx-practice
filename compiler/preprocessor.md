@@ -521,9 +521,47 @@ infile 和 outfile 均可以为`-`, 表示标准输入和输出
 - -idirafter dir
   将 dir 加入头文件查找目录, 如果 dir 以=或$SYSROOT 开头, 那这两个符号会被替换为 sysroot
   头文件查找顺序如下
+
   1. 查找当前文件所在目录(用户头文件)
   2. 从左到右查找-iquote 指定的目录(用户头文件)
   3. 从左到右查找-I 指定的目录
   4. 从左到右查找-isystem 指定的目录(头文件会被标识为系统文件)
   5. 查找标准系统目录(头文件会被标识为系统文件)
   6. 从左到右查找-idirafter 指定的目录(头文件会被标识为系统文件)
+
+- -I-
+  已被废弃, 用于分隔用户头文件查找目录和系统目录, -I-之前的-I 指定的目录用于用户头文件, -I-之后的-I 用于系统头文件, 并且使用户头文件查找目录不包含当前文件所在目录
+- -iprefix prefix
+  配合-iwithprefix 使用, 用于指定一个前缀, 如果是一个目录, 则应该以/结尾
+- -iwithprefix dir
+  prefix + dir 等同 -idirafter
+- -iwithprefixbefore dir
+  prefix + dir 等同 -I
+- -isysroot dir
+  同--sysroot 一样, 但是只用于头文件查找(若目标环境是 Darwin, 则也会应用于库查找)
+- -imultilib dir
+  用 dir 作为目标特定的 C++头文件查找目录的子目录
+- -nostdinc
+  查找头文件的时候忽略查找标准系统目录
+- -nostdinc++
+  同上, 不过是针对 C++
+- -Wcomment
+- -Wcomments
+  块注释内包含/\*, 行注释内包含//时会发出警告
+- -Wtrigraphs
+  程序内(注释除外)遇到 trigraph 时, 会警告, 该项默认启用, 可以通过-Wno-trigraphs 关闭
+- -Wundef
+  如果在#if 遇到不是宏的标识符, 则会警告
+- -Wexpansion-to-define
+  宏展开中包含 defined 时会发出警告
+- -Wunused-macros
+  用户在代码中定义的宏如果未使用, 则会发出警告, 在被跳过的条件编译中使用不算被使用(可以通过将宏放到条件编译内)
+- -Wno-endif-labels
+  在 else 和 endif 指令后如果有文本, 不要发出警告
+  ```c
+  #if FOO
+  …
+  #else FOO
+  …
+  #endif FOO
+  ```
