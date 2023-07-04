@@ -66,8 +66,11 @@ GCC 并不提供 hosted environment 独有的标准库设施, 如果需要完整
 ### Objective-C/Objective-C++
 
 支持 Objective-C 1.0, 还有 `exception` 和 `synchronization` 语法
+
 支持一些 Objective-C 2.0 语言扩展, 包括 `properties`, `fast enumeration`(OC++不支持), `method attributes`, `@optional`/`@required` 关键字
+
 GCC 默认使用 GNU Objective-C runtime 库, 它跟苹果系统的 Apple/NeXT Objective-C runtime 库有些不同
+
 可以通过`-fgnu-runtime` 和`-fnext-runtime` 切换
 
 Objective-C 和 Objective-C++没有正式的标准
@@ -77,6 +80,16 @@ Objective-C 2.0 相关扩展和功能默认就被支持, 可以通过`-fobjcstd=
 [OC 2.0 by APPLE](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
 
 ## 命令行选项
+
+因为部分选项包含了多个字符, 因此, 多个单字符的选项不能组合在一起进行传递, `-dv`和`-d -v`是不同的
+
+一些选项的名字很长, 比如以` -f` `-W `开头的选项` -fmoveloop-invariants` `-Wformat `等, 这些选项大多数都会有肯定/否定两种形式, ` -ffoo` `-fno-foo `
+
+一个选项可以接受多个参数, 这些参数通常用`空格`分开
+
+参数可以是字符串或者数字, 数字通常是无符号整数或 16 进制整数, 16 进制整数必须以`0x`开头
+
+通常和文件大小相关的参数值可以以`KB` `MB` `GB`结尾
 
 ### -E
 
