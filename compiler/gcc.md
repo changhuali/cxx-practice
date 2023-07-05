@@ -91,7 +91,7 @@ Objective-C 2.0 相关扩展和功能默认就被支持, 可以通过`-fobjcstd=
 
 通常和文件大小相关的参数值可以以`KB` `MB` `GB`结尾
 
-### options controlling the kind of output
+### 用于控制输出的选项
 
 #### -x language
 
@@ -147,6 +147,48 @@ _结果格式_
 - 编译结果会输出为 source.s
 - 汇编结果会输出为 source.o
 - 可执行文件会输出为 a.out
+
+#### -dumpbase dumpbase
+
+指定中间文件输出/辅助信息文件输出的文件名
+
+#### -dumpbase-ext auxdropsuf
+
+指定中间文件输出/辅助信息文件输出的后缀名
+
+#### -dumpdir dumppfx
+
+指定中间文件输出/辅助信息文件输出的目录
+
+#### -pass-exit-codes
+
+返回程序退出状态码, 默认出错了都会返回 1, 指定此选项后会返回具体的状态码, 如编译器内部错误会返回 4
+
+#### -pipe
+
+指定编译不同阶段直接的通信方式使用管道, 而不是生成临时文件(部分操作系统无法使用管道)
+
+#### -specs=file
+
+通过该文件中的内容覆盖传递给编译工具的默认选项值
+
+#### -wrapper
+
+将所有子命令将在包裹程序之下执行
+
+```sh
+gcc -c t.c -wrapper gdb,--args
+// 等同于
+gdb --args cc1 ...
+```
+
+#### -ffile-prefix-map=old=new
+
+将 old 目录下的文件映射到 new 目录下
+
+#### @file
+
+从 file 中读取命令行选项(如果 file 内部嵌套有@file, 则会被递归处理)
 
 ## C 实现定义的行为
 

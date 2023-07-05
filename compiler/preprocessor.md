@@ -32,8 +32,6 @@
 
 ```sh
 echo | cpp -v
-// or
-gcc/clang -Xpreprocessor -dM -E -</dev/null
 ```
 
 - -I 指定户头/系统头文件查找目录, 其优先级高于系统目录, 并按照从左到右依次查找
