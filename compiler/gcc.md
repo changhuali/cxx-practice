@@ -91,30 +91,62 @@ Objective-C 2.0 相关扩展和功能默认就被支持, 可以通过`-fobjcstd=
 
 通常和文件大小相关的参数值可以以`KB` `MB` `GB`结尾
 
-### -E
+### options controlling the kind of output
+
+#### -x language
+
+显示指定输入文件的语言
+
+- `c c-header cpp-output`
+- `c++ c++-header c++-system-header c++user-header c++-cpp-output`
+- `objective-c objective-c-header objective-c-cpp-output`
+- `objective-c++ objective-c++-header objective-c++-cpp-output`
+- `none` 取消显示指定, 输入文件的语言将从其后缀名推倒
+
+#### -c
+
+编译源文件, 并将编译结果进行汇编处理, 但不链接, 生成目标文件(.o), 无法识别的文件会被忽略
+
+#### -S
+
+编译源文件, 但不进行汇编处理, 生成汇编文件(.s), 无法识别的文件会被忽略
+
+#### -E
+
+预处理源文件, 生成预处理结果文件(.i .ii .mi)
 
 ```sh
 cc -E xxx.c -o xxx.i
 ```
 
-#### 预处理
+_预处理_
 
-- 展开所有宏定义 `#define VERSION 1.0.0`
-- 处理所有条件编译 `#if #ifdef #elif #endif`
-- 处理预编译指令, 所有头文件会递归展开 `#include <xxx.h>`
+- 展开所有宏定义
+- 处理预处理指令
+- 删除注释(会保留删除注释后留下的空行)
 
-  - 遇到的头文件会以`# linenum filename flags`的形式出现在`.i`文件中
+_结果格式_
 
-    - linenum 文件行号
-    - flags 可能的值为 1, 2, 3, 4
-      - 1 标志进入一个文件
-      - 2 标志回到一个文件
-      - 3 表示后续内容来自系统头文件
-      - 4 表示后续的内容应该被当做包含在`extern "C"`块中
+- 遇到的头文件会以`# linenum filename flags`的形式出现在`.i`文件中
 
-    > 由 flags 可以得出, 头文件采用 DFS 的方式进行展开, 通过行号可以判断后续代码是在源码中的哪一行
+  - linenum 文件行号
+  - flags 可能的值为 1, 2, 3, 4
+    - 1 标志进入一个文件
+    - 2 标志回到一个文件
+    - 3 表示后续内容来自系统头文件
+    - 4 表示后续的内容应该被当做包含在`extern "C"`块中
 
-- 删除注释(会保留删除注释后留下的空行) `// /**/`
+  > 由 flags 可以得出, 头文件采用 DFS 的方式进行展开, 通过行号可以判断后续代码是在源码中的哪一行
+
+#### -o file
+
+指定将结果输出到 file, 如果不指定则默认如下规则
+
+- 预处理结果会输出到 stdout
+- 预编译头文件会输出为 source.suffix.gch
+- 编译结果会输出为 source.s
+- 汇编结果会输出为 source.o
+- 可执行文件会输出为 a.out
 
 ## C 实现定义的行为
 
