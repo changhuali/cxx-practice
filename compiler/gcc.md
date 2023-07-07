@@ -397,6 +397,65 @@ GNU 链接器可以用`-Wl,-assert=definitions`这种格式
 
 此选项会被原样传递给链接器, 请查看链接器文档来获取 keyword 可能的值
 
+### 用于控制查找路径的命令行选项
+
+#### -I dir
+
+#### -iquote dir
+
+#### -isystem dir
+
+#### -idirafter dir
+
+#### -I-
+
+#### -iprefix prefix
+
+#### -iwithprefix dir
+
+#### -iwithprefixbefore dir
+
+#### -isysroot dir
+
+#### -imultilib dir
+
+> 以上选项见预处理器章节
+
+#### -nostdinc
+
+头文件查找不会查找标准系统目录, 仅查找用户指定目录/当前目录
+
+#### -nostdinc++
+
+对于 C++头文件查找, 不会查找 C++特定的标准目录
+
+#### -Ldir
+
+将 dir 添加到-l 指定的库查找目录中
+
+#### -Bprefix
+
+等同于环境变量`GCC_EXEC_PREFIX`
+gcc 会使用 prefix 目录下对应的子程序可执行文件(cpp cc1 as ld), 如果找不到, 会尝试/usr/lib/gcc /usr/loca/lib/gcc 两个目录, 如果都没找到, 则会直接使用子程序名(因此会在 PATH 下查找)
+
+会将该目录添加到-L
+会将该目录加上 include 再添加到-isystem
+libgcc.a 也会在该目录下查找, 如果找不到, 会尝试/usr/lib/gcc /usr/loca/lib/gcc 两个目录, 如果都没找到, 则不会链接该库
+
+#### -no-canonical-prefixes
+
+不会对路径进行符号链接展开, 相对路径转为绝对路径等处理
+
+#### --sysroot=dir
+
+将 dir 作为头文件/库文件查找的逻辑根目录, 比如: 如果编译器通常会在/usr/include 中查找头文件, 在/usr/lib 中查找库文件, 则会变为 dir/usr/include 和 dir/usr/lib
+
+和`-isysroot`同时使用时, `--sysroot`作用于库查找, `-isysroot`作用于头文件查找
+
+#### --no-sysroot-suffix
+
+一些目标环境, 会将一个后缀自动添加到通过`--sysroot`指定的根目录后面, 则结果会变为 dir/suffix/usr/include, 此选项用于禁止此行为
+
 ## C 实现定义的行为
 
 ## C++实现定义的行为
