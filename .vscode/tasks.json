@@ -6,12 +6,13 @@
       "command": "gcc-13",
       "args": [
         "-g",
-        "${file}",
-        "-save-temps",
-        "-dumpbase",
-        "aaa.aux",
+        "-pie",
+        "-fpie",
+        "-e",
+        "test",
         "-o",
         "${fileDirname}/build/${fileBasenameNoExtension}",
+        "${file}",
       ],
       "options": {
         "cwd": "${fileDirname}"

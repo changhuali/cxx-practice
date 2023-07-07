@@ -41,9 +41,9 @@ ISO C 标准定义了两种符合标准的实现
 
 ISO C 标准还为程序定义了两种运行环境
 
-- _hosted environment_ 必要的, 该环境可能缺失一些超出*freestanding implementation*要求之外的的标准库设施, 因此程序的启动和终止相关代码实现是由用户定义的
+- _freestanding environment_ 必要的, 该环境可能缺失一些超出*freestanding implementation*要求之外的的标准库设施, 程序入口也并不一定是`main`函数
   例: 操作系统内核的运行环境
-- _freestanding environment_ 可选的, 该环境提供了所有的标准库设施, 程序的启动代码是通过`int main(void)`或`int main(int, char *[])`实现的
+- \__hosted environment_ 可选的, 该环境提供了所有的标准库设施, 程序的启动代码是通过`int main(void)`或`int main(int, char *[])`实现的
   例: 运行在操作系统之上的应用程序的运行环境
 
 > 默认是 hosted environment, 通过`-ffreestanding`命令行选项切换到 freestanding environment 模式
@@ -91,7 +91,9 @@ Objective-C 2.0 相关扩展和功能默认就被支持, 可以通过`-fobjcstd=
 
 通常和文件大小相关的参数值可以以`KB` `MB` `GB`结尾
 
-### 用于控制输出的选项
+`gcc` 编译 C++文件时不会添加 C++库, 因此需要使用 `g++`, 它会自动链接 C++库, 同时 `g++`会将 C 代码当作 C++代码进行处理, 除非显示指定了`-x` 选项
+
+### 用于控制输出的命令行选项
 
 #### -x language
 
@@ -189,6 +191,211 @@ gdb --args cc1 ...
 #### @file
 
 从 file 中读取命令行选项(如果 file 内部嵌套有@file, 则会被递归处理)
+
+### 用于控制 C(C++ OBJC OBJC++) 的命令行选项
+
+#### -ansi
+
+对 C 语言来说, 等同于-std=c90, 对 C++来说, 等同于-std=c98
+
+#### -std=
+
+指定语言标准, 标准分 base standard(c*/c++*) 和 GNU standard(gnu*/gnu++*)
+指定为 base standard 时, 会同时包含 GNU 扩展中未和标准发生冲突的部分
+指定为 GNU standard 时, GNU standard 中定义的行为会具有较高优先级
+
+#### -aux-info filename
+
+向名为 filename 的文件输出函数原型
+
+#### -fno-asm
+
+指定-ansi 时, 此选项会隐式开启, 开启后 `asm` `inline` `typeof`不会被识别为关键字
+C++和 c99 及后续版本中的 inline 是关键字, 不受此选项控制
+c2x 及后续版本, typeof 也成为了关键字, 不受此选项控制
+
+#### -fno-builtin
+
+不以\_\_builtin\_\_为前缀的函数不会被识别为内置函数
+编译器可能会对内置函数做很多处理, 比如内联, 生成更高效的代码
+
+#### -fcond-mismatch
+
+允许条件表达式的第二/第三个参数类型不一致(试了下, 没啥作用, 都会报警告)
+
+#### -ffreestanding
+
+指定目标环境为`freestanding environment`, 会隐式开启`-fno-builtin`
+等同于`-fno-hosted`
+
+#### -fgimple
+
+允许为函数定义解析\_\_GIMPLE 标记, 该标记用于`GIMPLE`为该函数执行单元测试
+
+#### -fgnu-tm
+
+为 Intel 处理器下的 Linux 相关系统生成 Transactional Memory ABI 代码
+
+#### -fgnu89-inline
+
+告诉 GCC 使用 traditional 语义处理内联函数(不带`extern`关键字的内联函数会存在最终目标文件中)
+`__GNUC_GNU_INLINE__`
+
+#### -fno-gnu89-inline
+
+告诉 GCC 使用 C99 标准语义处理内联函数(带有`extern`关键字的内联函数会存在最终目标文件中)
+`__GNUC_STDC_INLINE__`
+
+#### -fhosted
+
+指定目标环境时`hosted environment`, 会隐式开启`-fbuiltin`
+
+#### -flax-vector-conversions
+
+允许具有不同元素数量和/或元素类型的向量间的转换(新代码已不建议使用)
+
+#### -fms-extensions
+
+允许接受一些微软头文件中的非标准的结构
+C++中, 允许结构体成员名是类型定义
+
+```c++
+typedef int UOW;
+struct ABC {
+  UOW UOW;
+};
+```
+
+默认只在 x86 下的 ms-abi 目标环境启用
+
+### 用于控制链接器的命令行选项
+
+#### -flinker-output=type
+
+- type=exec 生成静态二进制可执行文件 `-fpic -fpie`会被禁用
+- type=dyn 生成共享库
+- type=pie 生成二进制可执行文件, `-fpie`不会被禁用
+- type=rel 编译器确保增量链接已完成, 目标文件会包含用于链接时优化相关的中间代码区(增量链接开启时的默认选项)
+  增量编译会为每个函数预留部分空间, 防止某函数代码修改后需要重新链接所有符号, 从而加快链接速度
+- type=nolto-rel 目标文件不会包含用于链接时优化的中间代码区
+
+#### -fuse-ld=ld
+
+默认是 GNU 链接器
+
+- ld=bfd 使用 bfd 链接器
+- ld=gold 使用 gold 链接器
+- ld=lld 使用 llvm lld 链接器
+- ld=mold 使用 Modern 链接器
+
+#### -llibrary/-l library(只适用于 POSIX 系)
+
+链接时查找名称为 library 的库, 库的顺序会影响符号查找结果, 因此需要注意依赖关系
+
+库查找目录
+
+1. -L 指定的目录
+2. 环境变量 LIBRARY_PATH 指定的目录, 多目录用冒号分隔
+3. 一些标准系统目录
+
+动态库比静态库的优先级要高, 除非指定了-static 选项
+
+#### -lobjc
+
+链接 OBCJ/OBJC++程序时需要指定此选项
+
+#### -nostartfiles
+
+链接时不使用标准的系统启动文件
+
+#### -nodefaultlibs
+
+链接时不使用标准的系统库, `-static-libgcc -shared-libgcc`也会被忽略
+
+#### -nolibc
+
+比`-nodefaultlibs`宽松一点, 链接时只是不使用标准 C 库和跟系统强关联的系统库, 比如-lc 会被移除, 一些系统库也会被移除, 比如-lpthread -lm
+
+#### -nostdlib
+
+链接时不使用标准的系统启动文件和系统库, `-static-libgcc -shared-libgcc`也会被忽略
+
+`gcc library`相当于一个垫片库, 大多数时候如果你指定了`-nostdlib -nodefaultlibs`, 你应该指定`-lgcc`
+
+#### -nostdlib++
+
+链接时不会隐式使用标准的 C++库
+
+#### -e entry
+
+指定程序入口, 可以是一个符号名或者具体的地址
+
+#### -pie
+
+为目标环境生成一个位置无关的可动态链接的可执行文件
+可通过`-no-pie`关闭
+
+#### -static-pie
+
+为目标环境生成一个静态的位置无关的可执行文件
+
+#### -pthread
+
+链接 POSIX 线程库, GNU/Linux/类 Unix MinGW 目标环境支持
+
+#### -r
+
+生成可重定位输出, 其部分符号不需要实现, 但是需要声明, 需要和其他文件经过链接后才能执行
+
+#### -rdynamic
+
+指示链接器将所有的符号都加到动态符号表中
+
+#### -s
+
+从可执行文件中移除所有的符号表以及重定位信息
+
+#### -static
+
+对于支持动态链接的系统, `-static`会覆盖`-pie`并且防止链接到同名的动态库
+
+#### -shared
+
+生产共享目标文件(编译时需要指定`-fpic/-fPIC`)
+
+#### -shared-libgcc/-static-libgcc
+
+将 libgcc 当作共享/静态库, 如果找不到该库, 则没有任何效果
+
+#### -static-libstdc++
+
+为 C++程序静态链接 libstdc++(默认是走动态链接)
+
+#### -symbolic
+
+在构建共享库的时候, 将引用绑定到全局符号
+
+#### -T script
+
+使用 script 替换默认的链接脚本(链接器作为解释器)
+
+#### -Xlinker option
+
+将 option 作为选项传递给链接器, 选项名和参数需要分别指定, 如`-assert definitions`需要写成`-Xlinker -assert -Xlinker definitions`
+GNU 链接器可以用`-Xlinker -assert=definitions`这种格式
+
+#### -Wl, option
+
+将 option 作为选项传递给链接器, 选项名和参数可以用逗号分隔, 如`-assert definitions`需要写成`-Wl,-assert,definitions`
+GNU 链接器可以用`-Wl,-assert=definitions`这种格式
+
+#### -u symbol
+
+会假设符号 symbol 为定义, 以此强制让链接的库提供该符号定义
+
+#### -z keyword
+
+此选项会被原样传递给链接器, 请查看链接器文档来获取 keyword 可能的值
 
 ## C 实现定义的行为
 
